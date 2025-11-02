@@ -31,5 +31,5 @@ A Python-based attendance system that uses **face recognition** to automatically
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/your-username/face-recognition-attendance.git
+git clone https://github.com/shah-bakhsh/face-recognition-attendance.git
 cd face-recognition-attendance
