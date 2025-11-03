@@ -7,13 +7,13 @@ import pandas as pd
 import numpy as np
 import datetime
 
-# ------------------------------------------------------
+
 # Register a new student
-# ------------------------------------------------------
+
 def register_student():
     student_name = input("Enter student name: ").strip()
     if not student_name:
-        print("❌ Student name cannot be empty.")
+        print(" Student name cannot be empty.")
         return
 
     # Load existing faces if available
@@ -23,15 +23,15 @@ def register_student():
             known_faces = pickle.load(f)
 
     if student_name in known_faces:
-        print(f"⚠️ Student '{student_name}' is already registered.")
+        print(f" Student '{student_name}' is already registered.")
         return
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("❌ Error: Could not access the webcam.")
+        print("Error: Could not access the webcam.")
         return
 
-    print(f"📸 Registering {student_name} — Press 'C' to capture image, 'Q' to quit.")
+    print(f" Registering {student_name} — Press 'C' to capture image, 'Q' to quit.")
     images_to_capture = 5
     captured_encodings = []
     count = 0
@@ -39,7 +39,7 @@ def register_student():
     while count < images_to_capture:
         ret, frame = cap.read()
         if not ret:
-            print("❌ Error reading from webcam.")
+            print(" Error reading from webcam.")
             break
 
         # Display the frame
@@ -54,9 +54,9 @@ def register_student():
                 face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
                 captured_encodings.extend(face_encodings)
                 count += 1
-                print(f"✅ Captured {count}/{images_to_capture} face(s).")
+                print(f" Captured {count}/{images_to_capture} face(s).")
             else:
-                print("⚠️ No face detected, try again.")
+                print(" No face detected, try again.")
 
         elif key == ord('q'):
             print("Registration cancelled.")
@@ -69,17 +69,16 @@ def register_student():
         known_faces[student_name] = captured_encodings
         with open('known_faces.pkl', 'wb') as f:
             pickle.dump(known_faces, f)
-        print(f"🎉 Registration complete for {student_name} ({len(captured_encodings)} encodings saved).")
+        print(f"Registration complete for {student_name} ({len(captured_encodings)} encodings saved).")
     else:
-        print("❌ No face data captured. Registration failed.")
+        print(" No face data captured. Registration failed.")
 
 
-# ------------------------------------------------------
+
 # Recognize faces and mark attendance
-# ------------------------------------------------------
 def start_attendance():
     if not os.path.exists('known_faces.pkl'):
-        print("❌ No registered faces found. Please register students first.")
+        print(" No registered faces found. Please register students first.")
         return
 
     with open('known_faces.pkl', 'rb') as f:
@@ -97,14 +96,14 @@ def start_attendance():
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
-        print("❌ Error: Could not open webcam.")
+        print(" Error: Could not open webcam.")
         return
 
-    print("🎥 Starting attendance — Press 'Q' to quit.")
+    print(" Starting attendance — Press 'Q' to quit.")
     while True:
         ret, frame = cap.read()
         if not ret:
-            print("❌ Error reading frame.")
+            print(" Error reading frame.")
             break
 
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -142,13 +141,13 @@ def start_attendance():
     cv2.destroyAllWindows()
 
     attendance_df.to_csv('attendance.csv', index=False)
-    print("💾 Attendance saved to attendance.csv")
-    print("✅ Session ended.")
+    print("Attendance saved to attendance.csv")
+    print(" Session ended.")
 
 
-# ------------------------------------------------------
+
 # Main menu
-# ------------------------------------------------------
+
 def main():
     while True:
         print("\n=== FACE RECOGNITION ATTENDANCE SYSTEM ===")
